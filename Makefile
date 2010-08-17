@@ -18,12 +18,14 @@ SOURCES_Windows =
 #
 #------------------------------------------------------------------------------#
 
+VERSION=0.3.1
+
 # where Pd lives
 PD_PATH = ../../pd
 # where to install the library
 objectsdir = $(PD_PATH)/extra
 
-CFLAGS = -DPD -I$(PD_PATH)/src -Wall -W -g
+CFLAGS = -DPD -I$(PD_PATH)/src -Wall -W -g -DVERSION=\"$(VERSION)\"
 LDFLAGS =  
 LIBS = -lcwiid -lbluetooth -lpthread
 
@@ -102,8 +104,8 @@ single_install: $(LIBRARY_NAME) install-doc install-exec
 
 install-doc:
 	install -d $(DESTDIR)$(objectsdir)/$(LIBRARY_NAME)
-#	install -m644 -p $(SOURCES:.c=-help.pd) $(DESTDIR)$(objectsdir)/$(LIBRARY_NAME)
-	install -m644 -p $(wildcard *.pd) $(DESTDIR)$(objectsdir)/$(LIBRARY_NAME)
+	install -m644 -p $(SOURCES:.c=-help.pd) $(DESTDIR)$(objectsdir)/$(LIBRARY_NAME)
+#	install -m644 -p $(wildcard *.pd) $(DESTDIR)$(objectsdir)/$(LIBRARY_NAME)
 	install -m644 -p README $(DESTDIR)$(objectsdir)/$(LIBRARY_NAME)/README.txt
 	install -m644 -p VERSION $(DESTDIR)$(objectsdir)/$(LIBRARY_NAME)/VERSION.txt
 	install -m644 -p CHANGES $(DESTDIR)$(objectsdir)/$(LIBRARY_NAME)/CHANGES.txt
