@@ -9,13 +9,13 @@ SOURCES = wiimote.c
 
 # list all pd objects (i.e. myobject.pd) files here, and their helpfiles will
 # be included automatically
-#PDOBJECTS = mypdobject.pd
+#PDOBJECTS = 
 
 # example patches and related files, in the 'examples' subfolder
-#EXAMPLES = bothtogether.pd
+#EXAMPLES = 
 
 # manuals and related files, in the 'manual' subfolder
-#MANUAL = manual.txt
+#MANUAL = 
 
 # if you want to include any other files in the source and binary tarballs,
 # list them here.  This can be anything from header files, test patches,
@@ -31,9 +31,9 @@ EXTRA_DIST =
 #
 #------------------------------------------------------------------------------#
 
-CFLAGS = -DPD -I$(PD_PATH)/src -Wall -W -g
+CFLAGS = -DPD -I$(PD_PATH)/src -Wall -W -g $(shell pkg-config --cflags cwiid)
 LDFLAGS =  
-LIBS = 
+LIBS = $(shell pkg-config --libs cwiid)
 
 #------------------------------------------------------------------------------#
 #
