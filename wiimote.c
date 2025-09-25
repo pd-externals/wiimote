@@ -216,7 +216,7 @@ t_wiimoteMsgList*g_wiimoteMsgList=NULL;
 
 static void addWiimsg(union cwiid_mesg mesg, double timestamp)
 {
-
+  (void)mesg; (void)timestamp;
 }
 
 
@@ -591,7 +591,6 @@ static void wiimote_cwiid_message(t_wiimote *x, union cwiid_mesg*mesg) {
 static void wiimote_dequeue(void*nada)
 {
   /* get all the messages from the queue that are scheduled until now */
-
   const int dyndelay=0; /* set this to 1 use dynamic delays for compensation of asynchronicity */
 
   t_wiimoteMsgList*wl=g_wiimoteMsgList;
@@ -599,6 +598,7 @@ static void wiimote_dequeue(void*nada)
   double now=0;
   double nexttime=0.;
 
+  (void)nada; /* ignore */
   if(NULL==wl) {
     /* no messages to dequeue; this should never happen */
   }
@@ -678,8 +678,7 @@ static void wiimote_dequeue(void*nada)
   /* flush all the messages from the queue */
   t_wiimoteMsgList*wl=g_wiimoteMsgList;
   t_wiimoteMsgList*next=NULL;
-
-  nada=NULL; /* ignore */
+  (void)nada; /* ignore */
 
   if(NULL==wl) {
     /* no messages to dequeue */
@@ -725,6 +724,7 @@ static void wiimote_queue(t_wiimote*x, union cwiid_mesg*mesg, double timestamp)
 
 static void cwiid_error_callback(cwiid_wiimote_t *wiimote, const char*err, va_list ap) {
   t_wiimote *x=NULL;
+  (void)ap;
   if(g_wiimoteList==NULL||wiimote==NULL) {
     post("no wii's known");
     return;
@@ -958,6 +958,7 @@ static void wiimote_doConnect(t_wiimote *x, t_symbol *addr, t_symbol *dongaddr)
    x->wiimote = cwiid_open(&bdaddr, dong_bdaddr_ptr, flags);
 #else
    logpost(x, PD_DEBUG, "wiimote: opening");
+   (void)dong_bdaddr_ptr;
    x->wiimote = cwiid_open(&bdaddr, flags);
 #endif
 
