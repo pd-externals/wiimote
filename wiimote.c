@@ -731,18 +731,10 @@ static void cwiid_error_callback(cwiid_wiimote_t *wiimote, const char*err, va_li
   }
   x=getWiimoteObject(cwiid_get_id(wiimote));
  
-  if(NULL==x) {
-    if(err) {
-      error("wiimote: %s", err);
-    } else {
-      error("wiimote: unknown error");
-    }
+  if(err) {
+    pd_error(x, "wiimote: %s", err);
   } else {
-    if(err) {
-      pd_error(x, "wiimote: %s", err);
-    } else {
-      pd_error(x, "wiimote: unknown error");
-    }
+    pd_error(x, "wiimote: unknown error");
   }
 }
 
@@ -1060,7 +1052,22 @@ static void wiimote_bang(t_wiimote *x)
 
 static void *wiimote_new(t_symbol*s, int argc, t_atom *argv)
 {
-   t_wiimote *x = (t_wiimote *)pd_new(wiimote_class);
+   t_wiimote *x;
+   // connect if user provided an address as an argument:
+   if (argc==2) {
+      post("[%s] connecting to provided address...", s->s_name);
+      if (argv->a_type == A_SYMBOL)   {
+         s=atom_getsymbol(argv);
+      } else {
+         pd_error(0, "[wiimote] expects either no argument, or a bluetooth address as an argument. eg, 00:19:1D:70:CE:72");
+         return NULL;
+      }
+   } else {
+     s = 0;
+   }
+
+
+   x = (t_wiimote *)pd_new(wiimote_class);
 
    // create outlets:
    x->outlet_data = outlet_new(&x->x_obj, NULL);
@@ -1070,19 +1077,11 @@ static void *wiimote_new(t_symbol*s, int argc, t_atom *argv)
    x->connected = 0;
    x->wiimoteID = -1;
 
-  x->basetime=NULL;
-  x->baselogicaltime=0.;
+   x->basetime=NULL;
+   x->baselogicaltime=0.;
 
-  // connect if user provided an address as an argument:
-  if (argc==2) {
-      post("[%s] connecting to provided address...", s->s_name);
-      if (argv->a_type == A_SYMBOL)   {
-         wiimote_doConnect(x, NULL, atom_getsymbol(argv));
-      } else {
-         error("[wiimote] expects either no argument, or a bluetooth address as an argument. eg, 00:19:1D:70:CE:72");
-         return NULL;
-      }
-   }
+   if(s)
+      wiimote_doConnect(x, NULL, s);
    return (x);
 }
 
@@ -1106,7 +1105,7 @@ void wiimote_setup(void)
   g_clock = clock_new(NULL, (t_method)wiimote_dequeue);
 
   if (cwiid_set_err(&cwiid_error_callback)) {
-    error("wiimote: unable to set error callback");
+    pd_error(0, "wiimote: unable to set error callback");
   }
 
 
