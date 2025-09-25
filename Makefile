@@ -17,7 +17,12 @@ PKG_CONFIG ?= pkg-config
 CWIID_CFLAGS := $(shell $(PKG_CONFIG) --cflags cwiid)
 CWIID_LIBS := $(shell $(PKG_CONFIG) --libs cwiid)
 
-cflags = $(CWIID_CFLAGS)
+
+wiimote.version := $(shell sed -n \
+    's|^\#X text [0-9][0-9]* [0-9][0-9]* VERSION \(.*\);|\1|p' \
+    wiimote-meta.pd)
+
+cflags = $(CWIID_CFLAGS) -DVERSION='"$(wiimote.version)"'
 ldlibs = $(CWIID_LIBS)
 
 PDLIBBUILDER_DIR=pd-lib-builder/
