@@ -1030,7 +1030,7 @@ static void wiimote_doDisconnect(t_wiimote *x)
 	pd_error(x, "wiimote: unable to close connection.");
       }
       else {
-	post("disconnect successfull, resetting values");
+	post("disconnect successful, resetting values");
 	removeWiimoteObject(x);
 	x->connected = 0;
       }
