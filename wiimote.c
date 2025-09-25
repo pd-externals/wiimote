@@ -769,7 +769,8 @@ static void cwiid_callback(cwiid_wiimote_t *wiimote, int mesg_count,
   t_wiimote *x=NULL;
   double pd_timestamp=0;
 
-  //  print_timestamp(timestamp, NULL);
+  if(0)
+    print_timestamp(timestamp, NULL);
 
 
   if(g_wiimoteList==NULL||wiimote==NULL) {
