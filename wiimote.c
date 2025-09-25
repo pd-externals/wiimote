@@ -1096,9 +1096,12 @@ static void wiimote_free(t_wiimote* x)
   if(x->basetime) {
     freebytes(x->basetime, sizeof(struct timespec));
   }
+  x->basetime = NULL;
 
-  if(x->outlet_data)outlet_free(x->outlet_data); x->outlet_data=NULL;
-  if(x->outlet_status)outlet_free(x->outlet_status); x->outlet_status=NULL;
+  if(x->outlet_data)outlet_free(x->outlet_data);
+  if(x->outlet_status)outlet_free(x->outlet_status);
+  x->outlet_data = NULL;
+  x->outlet_status = NULL;
 }
 
 void wiimote_setup(void)
