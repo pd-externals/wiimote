@@ -503,7 +503,7 @@ static void wiimote_cwiid_message(t_wiimote *x, union cwiid_mesg*mesg) {
       wiimote_cwiid_battery(x, mesg->status_mesg.battery);
       switch (mesg->status_mesg.ext_type) {
       case CWIID_EXT_NONE:
-         verbose(1, "No extension attached");
+         logpost(x, PD_DEBUG, "No extension attached");
          break;
 #ifdef CWIID_RPT_NUNCHUK
       case CWIID_EXT_NUNCHUK:
@@ -797,7 +797,7 @@ static void wiimote_status(t_wiimote *x)
 static void wiimote_resetReportMode(t_wiimote *x)
 {
    if (x->connected)   {
-      verbose(1, "changing report mode for Wii%02d to %d", x->wiimoteID, x->reportMode);
+      logpost(x, PD_DEBUG, "changing report mode for Wii%02d to %d", x->wiimoteID, x->reportMode);
       if (cwiid_command(x->wiimote, CWIID_CMD_RPT_MODE, x->reportMode)) {
 	pd_error(x, "wiimote: could not set report mode.");
       }
@@ -934,30 +934,30 @@ static void wiimote_doConnect(t_wiimote *x, t_symbol *addr, t_symbol *dongaddr)
 
    // determine address:
    if (NULL==addr || addr==gensym("")) {
-     verbose(1, "searching for wii...");
+     logpost(x, PD_DEBUG, "searching for wii...");
      bdaddr = *BDADDR_ANY;
    } else {
      str2ba(addr->s_name, &bdaddr);
-     verbose(1, "Connecting to Wii '%s'", addr->s_name);
+     logpost(x, PD_DEBUG, "Connecting to Wii '%s'", addr->s_name);
    }
    post("Press buttons 1 and 2 simultaneously.");
 
    // determine dongleaddress:
    if (NULL==dongaddr || dongaddr==gensym("")) {
-     verbose(1, "using default dongle");
+     logpost(x, PD_DEBUG, "using default dongle");
      dong_bdaddr_ptr = NULL;
    }   else {
-     verbose(1, "using dongle '%s'", dongaddr->s_name);
+     logpost(x, PD_DEBUG, "using dongle '%s'", dongaddr->s_name);
      str2ba(dongaddr->s_name, &dong_bdaddr);
    }
    // connect:
 
 
 #ifdef CWIID_OPEN_WITH_DONGLE
-   verbose(1,"wiimote: opening multidongle");
+   logpost(x, PD_DEBUG, "wiimote: opening multidongle");
    x->wiimote = cwiid_open(&bdaddr, dong_bdaddr_ptr, flags);
 #else
-   verbose(1,"wiimote: opening");
+   logpost(x, PD_DEBUG, "wiimote: opening");
    x->wiimote = cwiid_open(&bdaddr, flags);
 #endif
 
