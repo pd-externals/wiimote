@@ -579,6 +579,7 @@ static void wiimote_cwiid_message(t_wiimote *x, union cwiid_mesg*mesg) {
 #endif
    case CWIID_MESG_ERROR:
      wiimote_cwiid_error(x, &mesg->error_mesg);
+     break;
    default:
       post("mesg %d unknown", (mesg->type));
       break;
