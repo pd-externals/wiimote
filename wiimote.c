@@ -37,6 +37,25 @@
 
 #define PI   3.14159265358979323
 
+
+#ifndef CWIID_RPT_CLASSIC
+# warning building without support for classic controller
+#endif
+#ifndef CWIID_RPT_MOTIONPLUS
+# warning building without support for MotionPlus controller
+#endif
+#ifndef CWIID_RPT_NUNCHUK
+# warning building without support for nunchuck controller
+#endif
+#ifndef CWIID_RPT_BALANCE
+# warning building without support for balance controller
+#endif
+
+#ifndef CWIID_OPEN_WITH_DONGLE
+# warning building without multidongle support
+#endif
+
+
 // class and struct declarations for wiimote pd external:
 static t_class *wiimote_class;
 typedef struct _wiimote
