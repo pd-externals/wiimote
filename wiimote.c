@@ -233,12 +233,6 @@ typedef struct _wiimoteMsgList {
 
 t_wiimoteMsgList*g_wiimoteMsgList=NULL;
 
-static void addWiimsg(union cwiid_mesg mesg, double timestamp)
-{
-  (void)mesg; (void)timestamp;
-}
-
-
 
 // ==============================================================
 /* forward declarations */
